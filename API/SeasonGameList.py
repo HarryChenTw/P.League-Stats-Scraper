@@ -7,6 +7,7 @@ import pandas as pd
 class SeasonGameList:
     base_url = 'https://pleagueofficial.com'
     gmae_types = ['regular-season','playoffs','finals']
+    game_file_number_starts = {'regular-season':73, 'playoffs':174, 'finals':184}
 
     def __init__(self, season:str='2021-22'):
         option = webdriver.ChromeOptions()
@@ -22,7 +23,7 @@ class SeasonGameList:
         except:
             print('Cannot get the game list from the p-league website!')
 
-    def __crawl_game_list(self, game_type):
+    def __crawl_game_list(self, game_type, up_to_now:bool=True):
         game_type_uri_name = f'schedule-{game_type}' 
         self.__browser_driver.get(f'{self.base_url}/{game_type_uri_name}/{self.season}')
 

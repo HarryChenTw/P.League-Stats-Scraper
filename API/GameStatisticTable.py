@@ -1,4 +1,3 @@
-
 import requests
 import pandas as pd
 
@@ -21,6 +20,8 @@ class GameStatisticTable:
     def __parse_table(self, team_side):
         assert team_side in ['home','away']
         stat_table = pd.DataFrame([],columns=self.column_name)
+
+        # parse every player
         for player_stat in self.json_data['data'][team_side]:
             player_stat_row = pd.DataFrame(
                 [[
@@ -51,7 +52,33 @@ class GameStatisticTable:
                 ]],
                 columns=self.column_name
             )
-            stat_table = pd.concat([stat_table, player_stat_row]) 
+            stat_table = pd.concat([stat_table, player_stat_row])
+        # parse total statistic 
+        total_stat = self.json_data['data'][f'{team_side}_total']
+        total_stat_row = pd.DataFrame(
+            [[
+                '','','Total',
+                total_stat['mins'],
+                f"{total_stat['two_m']}-{total_stat['two']}",
+                f"{total_stat['twop']}%",
+                f"{total_stat['trey_m']}-{total_stat['trey']}",
+                f"{total_stat['treyp']}%",
+                f"{total_stat['ft_m']}-{total_stat['ft']}",
+                f"{total_stat['ftp']}%",
+                total_stat['points'],
+                total_stat['reb'],
+                total_stat['reb_o'],
+                total_stat['reb_d'],
+                total_stat['ast'],
+                total_stat['stl'],
+                total_stat['blk'],
+                total_stat['turnover'],
+                total_stat['pfoul'],
+                '','','','',''
+            ]],
+            columns=self.column_name
+        )
+        stat_table = pd.concat([stat_table, total_stat_row])
         return stat_table
     
     def get_table(self, team_side):
