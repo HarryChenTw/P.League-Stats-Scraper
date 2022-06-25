@@ -1,4 +1,4 @@
-**PLeague-Stats-Downloader**是一個工具可以下載所選的 P.LEAGUE 球賽場次的統計資料。資料內容與 [P.LEAGUE](https://pleagueofficial.com/) 網站提供的內容相同，但網站不提供下載的選項。因此PLeague-Stats-Downloader透過爬蟲的技術，得到網站上的統計資料並下載，提供給想要做資料分析的人可以有更快速的資料取得方式。
+**PLeague-Stats-Downloader**是一個工具可以下載所選的 P.League 球賽場次的統計資料。資料內容與 [P.League](https://pleagueofficial.com/) 網站提供的內容相同，但網站不提供下載的選項。因此PLeague-Stats-Downloader透過爬蟲的技術，得到網站上的統計資料並下載，提供給想要做資料分析的人可以有更快速的資料取得方式。
 
 <em>**Jun. 25 2022 Updated (v1.0.0)**</em>
 
