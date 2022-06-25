@@ -12,7 +12,8 @@ class SeasonGameList:
     def __init__(self, season:str='2021-22'):
         option = webdriver.ChromeOptions()
         option.add_argument('--headless')
-        self.__browser_driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=option)
+        #self.__browser_driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=option)
+        self.__browser_driver = webdriver.Chrome(executable_path='webdriver/chromedriver', options=option)
         
         self.__game_list_table_column = ['game','date','weekday','time','away_team','home_team']
         self.__game_list_table = dict()
