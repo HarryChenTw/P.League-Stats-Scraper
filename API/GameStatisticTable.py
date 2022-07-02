@@ -5,20 +5,46 @@ class GameStatisticTable:
     column_name = ['#','先發','球員','時間','二分','二分%','三分','三分%','罰球','罰球%',
                 '得分','籃板','攻板','防板','助攻','抄截','阻攻','失誤','犯規','EFF','+/-',
                 'TS%','USG%','EFG%']
-    
-    def __init__(self, game_file_number:str):
+    team_sides = ['home','away']
+    game_file_number_starts = {
+        "2020-21":{
+            'regular-season' : 13,
+            'playoffs' : 61,
+            'finals' : 66
+        },
+        "2021-22":{
+            'regular-season' : 73,
+            'playoffs' : 174,
+            'finals' : 184
+        }
+    }
+    gmae_types = ['regular-season','playoffs','finals']
+    supported_season = ['2021-22']
+
+    def __init__(self, season:str, game_type:str, game_number:str):
+        assert season in self.supported_season
+        assert game_type in self.gmae_types
+
+        game_file_number = self.convert_to_game_file_name(season, game_type, game_number)
         params = {'id': game_file_number,'away_tab':'total','home_tab':'total'}
-        try:
-            self.json_data = requests.get('https://pleagueofficial.com/api/boxscore.php',params = params).json()
-            try:
-                self.home_table, self.away_table = self.__parse_table(team_side = 'home'), self.__parse_table(team_side = 'away')
-            except:
-                print('Parsing statistic table error!')
-        except:
-            print('Cannot get stastistic data from the p-league website!')
-        
+        self.json_data = requests.get('https://pleagueofficial.com/api/boxscore.php',params = params).json()
+        self.home_table, self.away_table = self.__parse_table(team_side = 'home'), self.__parse_table(team_side = 'away')
+    
+    def convert_to_game_file_name(self, season:str, game_type:str, game_number:str) -> str:
+        file_starts = self.game_file_number_starts[season][game_type]
+        if game_type == 'regular-season':
+            return int(game_number[1:]) + file_starts -1
+        elif game_type == 'playoffs':
+            if game_number[0] == 'B':
+                return int(game_number[-1]) * 2 +  file_starts -1
+            else:
+                return int(game_number[-1]) +  file_starts -1
+        elif game_type == 'finals':
+            int(game_number[-1]) + file_starts -1
+
+
     def __parse_table(self, team_side):
-        assert team_side in ['home','away']
+        assert team_side in self.team_sides
         stat_table = pd.DataFrame([],columns=self.column_name)
 
         # parse every player
@@ -82,31 +108,26 @@ class GameStatisticTable:
         return stat_table
     
     def get_table(self, team_side):
-        assert team_side in ['home','away']
-        try:
-            if team_side == 'home':
-                return self.home_table
-            elif team_side == 'away':
-                return self.away_table 
-        except:
-            print('Cannot get the statistic table!')
+        assert team_side in self.team_sides
+
+        if team_side == 'home':
+            return self.home_table
+        elif team_side == 'away':
+            return self.away_table 
     
     def download_table(self, team_side, format, output_path):
-        assert team_side in ['home','away']
+        assert team_side in self.team_sides
         assert format in ['csv','xlsx']
-
-        try:
-            if team_side == 'home':
-                output_table = self.home_table
-            elif team_side == 'away':
-                output_table = self.away_table
-            
-            if format == 'csv':
-                output_table.to_csv(output_path, index=False)
-            elif format == 'xlsx':
-                output_table.to_excel(output_path, index=False)
-        except:
-            print('Cannot get the statistic table!')
+        
+        if team_side == 'home':
+            output_table = self.home_table
+        elif team_side == 'away':
+            output_table = self.away_table
+        
+        if format == 'csv':
+            output_table.to_csv(output_path, index=False)
+        elif format == 'xlsx':
+            output_table.to_excel(output_path, index=False)
     
         
         
