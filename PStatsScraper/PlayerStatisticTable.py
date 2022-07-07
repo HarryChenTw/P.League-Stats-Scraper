@@ -6,8 +6,16 @@ import pandas as pd
 class PlayerStatisticTable:
     base_url = 'https://pleagueofficial.com'
     player_stat_folder = 'stat-player'
+    chinese_column_name = ['球員','背號','球隊','出賽次數','時間 (分)','兩分命中','兩分出手','兩分%','三分命中','三分出手','三分%',
+                        '罰球命中','罰球出手','罰球%','得分','攻板','防板','籃板','助攻','抄截','阻攻','失誤','犯規']
+    english_column_name = ['player','jersey','team','games','mins','2PM','2PA','2P%','3PM','3PA','3P%',
+                        'FTM','FTA','FT%','points','REB_O','REB_D','REB','AST','STL','BLK','TO','PF']
+    def __init__(self, english_col:bool=False):
+        if english_col:
+            self.column_name = self.english_column_name
+        else: 
+            self.column_name = self.chinese_column_name
 
-    def __init__(self):
         option = webdriver.ChromeOptions()
         option.add_argument('--headless')
         self.__browser_driver = webdriver.Chrome(executable_path='webdriver/chromedriver', options=option)
@@ -55,11 +63,6 @@ class PlayerStatisticTable:
         # parse stat table
         table_element = self.__browser_driver.find_element(by=By.CSS_SELECTOR, value='table#main-table')
         try:
-            # get table header
-            header = list()
-            for header_th in table_element.find_elements(by=By.CSS_SELECTOR, value='thead>tr>th'):
-                header.append(header_th.text)
-
             # get player stat
             player_stats = list()
             for player_row in table_element.find_elements(by=By.CSS_SELECTOR, value='tbody>tr'):
@@ -71,7 +74,7 @@ class PlayerStatisticTable:
         except:
             print('Warning : This table is not available')
 
-        return pd.DataFrame(player_stats, columns=header)
+        return pd.DataFrame(player_stats, columns=self.column_name)
     def download_table(self, format, output_path,
                         season = '2021-22', game_type = '例行賽', team = '全部隊伍', stat_type = '平均'):
         assert format in ['csv','xlsx']
