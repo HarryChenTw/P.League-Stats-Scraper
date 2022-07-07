@@ -6,8 +6,9 @@ import pandas as pd
 
 class SeasonGameList:
     base_url = 'https://pleagueofficial.com'
-    gmae_types = ['regular-season','playoffs','finals']
+    supported_gmae_types = ['regular-season','playoffs','finals']
     supported_season = ['2021-22']
+    game_list_table_column = ['game','date','weekday','time','away_team','home_team']
 
     def __init__(self, season:str='2021-22'):
         assert season in self.supported_season
@@ -18,10 +19,9 @@ class SeasonGameList:
         #self.__browser_driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=option)
         self.__browser_driver = webdriver.Chrome(executable_path='webdriver/chromedriver', options=option)
         
-        self.__game_list_table_column = ['game','date','weekday','time','away_team','home_team']
         self.__game_list_table = dict()
         self.season = season
-        for gmae_type in self.gmae_types:
+        for gmae_type in self.supported_gmae_types:
             self.__game_list_table[gmae_type] = self.__crawl_game_list(gmae_type)
 
     def __crawl_game_list(self, game_type, up_to_now:bool=True):
@@ -47,8 +47,8 @@ class SeasonGameList:
             teams = element.find_elements(by=By.CSS_SELECTOR, value='span.PC_only.fs14')
             away_team, home_team = teams[0].text, teams[1].text
             game_list.append([game, date_, weekday_, time_, away_team, home_team])
-        return pd.DataFrame(game_list, columns=self.__game_list_table_column)
+        return pd.DataFrame(game_list, columns=self.game_list_table_column)
 
     def get_game_list(self, game_type:str):
-        assert game_type in self.gmae_types
+        assert game_type in self.supported_gmae_types
         return self.__game_list_table[game_type]

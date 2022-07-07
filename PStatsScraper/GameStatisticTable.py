@@ -2,9 +2,12 @@ import requests
 import pandas as pd
 
 class GameStatisticTable:
-    column_name = ['#','先發','球員','時間','二分','二分%','三分','三分%','罰球','罰球%',
+    chinese_column_name = ['#','先發','球員','時間','二分','二分%','三分','三分%','罰球','罰球%',
                 '得分','籃板','攻板','防板','助攻','抄截','阻攻','失誤','犯規','EFF','+/-',
                 'TS%','USG%','EFG%']
+    english_column_name = ['jersey','starter','player','mins','2P','2P%','3P','3P%','FT','FT%',
+                        'points','REB','REB_O','REB_D','AST','STL','BLK','TO','PF','EFF','+/-',
+                        'TS%','USG%','EFG%']
     team_sides = ['home','away']
     game_file_number_starts = {
         "2020-21":{
@@ -18,13 +21,16 @@ class GameStatisticTable:
             'finals' : 184
         }
     }
-    gmae_types = ['regular-season','playoffs','finals']
+    supported_gmae_types = ['regular-season','playoffs','finals']
     supported_season = ['2021-22']
 
-    def __init__(self, season:str, game_type:str, game_number:str):
+    def __init__(self, season:str, game_type:str, game_number:str, english_col:bool=False):
         assert season in self.supported_season
-        assert game_type in self.gmae_types
-
+        assert game_type in self.supported_gmae_types
+        if english_col:
+            self.column_name = self.english_column_name
+        else: 
+            self.column_name = self.chinese_column_name
         game_file_number = self.convert_to_game_file_name(season, game_type, game_number)
         params = {'id': game_file_number,'away_tab':'total','home_tab':'total'}
         self.json_data = requests.get('https://pleagueofficial.com/api/boxscore.php',params = params).json()
