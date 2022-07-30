@@ -3,7 +3,7 @@
 <em>**Jul. 02 2022 Updated (v1.2.1)**</em>
 
 ### 使用範例
-參考 [api-usage-example.ipynb](https://github.com/HarryChenTw/P.League-Stats-Downloader/blob/main/api-usage-example.ipynb)
+參考 [usage-example.ipynb](https://github.com/HarryChenTw/P.League-Stats-Downloader/blob/main/api-usage-example.ipynb)
 
 ### 功能
 1. 取得賽季所有的比賽列表
