@@ -2,6 +2,9 @@
 
 <em>**Jul. 02 2022 Updated (v1.2.1)**</em>
 
+<img width="1436" alt="Screen Shot 2022-08-30 at 2 08 13 PM" src="https://user-images.githubusercontent.com/75982405/187362229-deb0f10d-cd85-49ae-899b-01f316e63130.png">
+
+
 ### 使用範例
 參考 [usage-example.ipynb](https://github.com/HarryChenTw/P.League-Stats-Downloader/blob/main/api-usage-example.ipynb)
 
