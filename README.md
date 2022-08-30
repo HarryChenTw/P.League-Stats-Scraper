@@ -6,7 +6,7 @@
 
 
 ### 使用範例
-參考 [usage-example.ipynb](https://github.com/HarryChenTw/P.League-Stats-Downloader/blob/main/api-usage-example.ipynb)
+參考 [usage-example.ipynb](https://github.com/HarryChenTw/P.League-Stats-Scraper/blob/main/usage-example.ipynb)
 
 ### 功能
 1. 取得賽季所有的比賽列表
