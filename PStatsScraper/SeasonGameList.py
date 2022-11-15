@@ -7,7 +7,7 @@ import pandas as pd
 class SeasonGameList:
     base_url = 'https://pleagueofficial.com'
     supported_gmae_types = ['regular-season','playoffs','finals']
-    supported_season = ['2021-22']
+    supported_season = ['2021-22', '2022-23']
     game_list_table_column = ['game','date','weekday','time','away_team','home_team']
 
     def __init__(self, season:str='2021-22'):
